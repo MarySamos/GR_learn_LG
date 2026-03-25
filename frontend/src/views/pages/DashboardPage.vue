@@ -89,21 +89,77 @@ const loadData = async () => {
 }
 
 const renderCharts = () => {
-  // 简化版图表，实际数据需要从 API 获取
-  if (jobChartRef.value) {
-    const chart = echarts.init(jobChartRef.value)
-    chart.setOption({
-      tooltip: { trigger: 'item' },
-      series: [{
-        type: 'pie',
-        data: [
-          { value: 1048, name: '管理员' },
-          { value: 1921, name: '技术人员' },
-          { value: 2678, name: '蓝领' }
-        ]
-      }]
-    })
+  // 极简冷色调
+  const colorPalette = ['#6C6C6C', '#8C8C8C', '#B4B4B4', '#D9D9D9'];
+
+  const initChart = (refVal, option) => {
+    if (refVal.value) {
+      const chart = echarts.init(refVal.value)
+      chart.setOption(option)
+      window.addEventListener('resize', () => chart.resize())
+      return chart
+    }
   }
+
+  initChart(jobChartRef, {
+    tooltip: { trigger: 'item' },
+    color: colorPalette,
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      data: [
+        { value: 1048, name: '管理员' },
+        { value: 1921, name: '技术人员' },
+        { value: 2678, name: '蓝领' }
+      ]
+    }]
+  })
+
+  initChart(maritalChartRef, {
+    tooltip: { trigger: 'item' },
+    color: colorPalette,
+    series: [{
+      type: 'pie',
+      radius: '60%',
+      data: [
+        { value: 3048, name: '已婚' },
+        { value: 1521, name: '单身' },
+        { value: 878, name: '离异' }
+      ]
+    }]
+  })
+
+  initChart(eduChartRef, {
+    tooltip: { trigger: 'axis' },
+    color: ['#8C8C8C'],
+    xAxis: { type: 'category', data: ['大学', '高中', '初中', '未知'] },
+    yAxis: { type: 'value' },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+    series: [{
+      type: 'bar',
+      barWidth: '40%',
+      data: [1200, 2000, 1500, 800]
+    }]
+  })
+
+  initChart(outcomeChartRef, {
+    tooltip: { trigger: 'axis' },
+    color: ['#B4B4B4'],
+    xAxis: { type: 'category', data: ['成功', '失败', '其他'] },
+    yAxis: { type: 'value' },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+    series: [{
+      type: 'line',
+      smooth: true,
+      data: [320, 800, 450],
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(180, 180, 180, 0.4)' },
+          { offset: 1, color: 'rgba(180, 180, 180, 0)' }
+        ])
+      }
+    }]
+  })
 }
 
 onMounted(async () => {
@@ -122,36 +178,35 @@ onMounted(async () => {
 }
 
 .stat-card-mini {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-container);
+  border-radius: var(--radius-large);
   padding: 24px;
-  border: 1px solid rgba(196, 164, 132, 0.08);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-sm);
   text-align: center;
 }
 
 .stat-label {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
   margin-bottom: 12px;
 }
 
 .stat-value {
   font-size: 2rem;
   font-weight: 600;
-  font-family: 'Playfair Display', serif;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   margin-bottom: 8px;
 }
 
 .stat-change {
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: var(--color-text-secondary);
 }
 
 .stat-change.positive {
-  color: var(--success);
+  color: var(--color-success);
 }
 
 .charts-section {
@@ -161,17 +216,18 @@ onMounted(async () => {
 }
 
 .chart-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-container);
+  border-radius: var(--radius-large);
   padding: 24px;
-  border: 1px solid rgba(196, 164, 132, 0.08);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-sm);
 }
 
 .chart-card h3 {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   margin-bottom: 20px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .chart-container {

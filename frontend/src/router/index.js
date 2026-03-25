@@ -52,6 +52,12 @@ const routes = [
     component: Login,
     meta: { requiresAuth: false }
   },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: Chat,
+    meta: { title: '智能对话', requiresAuth: true }
+  },
 
   // 主应用路由
   {
@@ -66,14 +72,6 @@ const routes = [
         name: 'Dashboard',
         component: Dashboard,
         meta: { title: '数据概览' }
-      },
-
-      // 智能对话
-      {
-        path: 'chat',
-        name: 'Chat',
-        component: Chat,
-        meta: { title: '智能对话' }
       },
 
       // ========== 数据分析模块 ==========

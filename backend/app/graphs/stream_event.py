@@ -57,3 +57,24 @@ class StreamEvent:
     def sources(sources: list) -> str:
         """RAG知识来源事件"""
         return f"data: {json.dumps({'type': 'sources', 'sources': sources}, ensure_ascii=False)}\n\n"
+
+    @staticmethod
+    def chart_data(chart_type: str, x_data: list, y_data: list, title: str = "", series_name: str = "") -> str:
+        """图表数据事件（JSON格式，前端用 ECharts 渲染）
+
+        Args:
+            chart_type: 图表类型 (bar/line/pie/radar)
+            x_data: X轴数据
+            y_data: Y轴数据
+            title: 图表标题
+            series_name: 系列名称
+        """
+        payload = {
+            "type": "chart_data",
+            "chart_type": chart_type,
+            "x_data": x_data,
+            "y_data": y_data,
+            "title": title,
+            "series_name": series_name,
+        }
+        return f"data: {json.dumps(payload, ensure_ascii=False, default=str)}\n\n"

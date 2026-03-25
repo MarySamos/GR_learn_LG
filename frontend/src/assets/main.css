@@ -7,47 +7,48 @@
    CSS 变量定义
    ========================================================================= */
 :root {
-  /* 主色调 - Apple 极简风 */
-  --color-primary: #0071e3;
-  --color-primary-light: #2997ff;
-  --color-primary-dark: #0077ed;
+  /* 主色调 - 极简淡雅系 */
+  --color-primary: #8C8C8C; /* 柔和的高级灰 */
+  --color-primary-light: #B4B4B4;
+  --color-primary-dark: #6C6C6C;
+  --color-accent: #E8DCC4; /* 高级定制淡米褐，用作部分小点缀 */
 
   /* 辅助色 */
-  --color-success: #34c759;
-  --color-warning: #ff9f0a;
-  --color-danger: #ff3b30;
-  --color-info: #8e8e93;
+  --color-success: #A3C9A8;
+  --color-warning: #E8C1A0;
+  --color-danger: #E6A8A8;
+  --color-info: #B8B8B8;
 
   /* 中性色 */
-  --color-text-primary: #1d1d1f;
-  --color-text-regular: #515154;
-  --color-text-secondary: #86868b;
-  --color-text-placeholder: #d2d2d7;
+  --color-text-primary: #2C2C2C;
+  --color-text-regular: #595959;
+  --color-text-secondary: #8C8C8C;
+  --color-text-placeholder: #D9D9D9;
 
-  /* 背景色 */
-  --color-bg-page: #f5f5f7;
-  --color-bg-container: #ffffff;
-  --color-bg-overlay: rgba(0, 0, 0, 0.4);
+  /* 背景色 - 关键：淡米白色系 */
+  --color-bg-page: #FAF9F6; /* 极其淡雅的米白色 */
+  --color-bg-container: #FFFFFF; /* 纯白组件以凸显层次 */
+  --color-bg-overlay: rgba(250, 249, 246, 0.8);
 
-  /* 边框色 */
-  --color-border: #d2d2d7;
-  --color-border-light: #e5e5ea;
+  /* 边框色 - 极细极淡 */
+  --color-border: #E8E8E8;
+  --color-border-light: #F0F0F0;
 
-  /* 阴影：柔和的扩散 */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.04);
-  --shadow-base: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-dark: 0 16px 48px rgba(0, 0, 0, 0.12);
+  /* 阴影：柔和到几乎不可察觉的微扩散 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-base: 0 8px 24px rgba(0, 0, 0, 0.04);
+  --shadow-dark: 0 16px 48px rgba(0, 0, 0, 0.05);
 
   /* 玻璃态效果 */
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
 
   /* 圆角 */
-  --radius-small: 8px;
-  --radius-base: 12px;
-  --radius-large: 16px;
-  --radius-xl: 24px;
+  --radius-small: 6px;
+  --radius-base: 10px;
+  --radius-large: 14px;
+  --radius-xl: 20px;
 
   /* 间距 */
   --spacing-xs: 4px;

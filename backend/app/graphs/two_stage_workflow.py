@@ -153,6 +153,23 @@ class TwoStageWorkflow:
                 intent=final_state.get("intent", "query")
             )
 
+        # 发送 SQL 事件
+        generated_sql = final_state.get("generated_sql")
+        if generated_sql:
+            yield StreamEvent.sql(generated_sql, final_state.get("sql_corrected", False))
+
+        # 发送图表数据事件（JSON 格式，前端用 ECharts 渲染）
+        sql_result = final_state.get("sql_result", [])
+        if sql_result and len(sql_result) > 1:
+            chart_info = self._extract_chart_data(sql_result, message)
+            if chart_info:
+                yield StreamEvent.chart_data(**chart_info)
+
+        # RAG 知识来源事件
+        rag_sources = final_state.get("rag_sources")
+        if rag_sources:
+            yield StreamEvent.sources(rag_sources)
+
         # 适配语气
         answer = final_state.get("final_answer", "抱歉，没有生成回答。")
         adapted = self.tone_adapter.adapt(
@@ -163,6 +180,65 @@ class TwoStageWorkflow:
 
         yield StreamEvent.answer(adapted)
 
+    @staticmethod
+    def _extract_chart_data(sql_result: list, user_input: str = "") -> Optional[dict]:
+        """从查询结果中自动提取图表数据
+
+        Args:
+            sql_result: SQL 查询结果列表
+            user_input: 用户原始输入（用于推测图表类型）
+
+        Returns:
+            图表数据字典（chart_type, x_data, y_data, title, series_name）或 None
+        """
+        if not sql_result or len(sql_result) < 2:
+            return None
+
+        columns = list(sql_result[0].keys())
+        if len(columns) < 2:
+            return None
+
+        # 识别分类列和数值列
+        str_cols = []
+        num_cols = []
+        for col in columns:
+            sample_val = sql_result[0].get(col)
+            if isinstance(sample_val, (int, float)):
+                num_cols.append(col)
+            else:
+                str_cols.append(col)
+
+        if not str_cols or not num_cols:
+            return None
+
+        x_col = str_cols[0]
+        y_col = num_cols[0]
+
+        x_data = [str(row.get(x_col, "")) for row in sql_result]
+        y_data = [row.get(y_col, 0) for row in sql_result]
+
+        # 根据用户输入推测图表类型
+        chart_type = "bar"
+        input_lower = user_input.lower()
+        if any(kw in input_lower for kw in ["饼图", "占比", "比例", "百分比", "pie"]):
+            chart_type = "pie"
+        elif any(kw in input_lower for kw in ["折线", "趋势", "变化", "line"]):
+            chart_type = "line"
+        elif any(kw in input_lower for kw in ["雷达", "radar"]):
+            chart_type = "radar"
+
+        # 生成标题
+        title = f"{x_col} vs {y_col}"
+
+        return {
+            "chart_type": chart_type,
+            "x_data": x_data,
+            "y_data": y_data,
+            "title": title,
+            "series_name": y_col,
+        }
+
 
 # 全局实例
 two_stage_workflow = TwoStageWorkflow()
+

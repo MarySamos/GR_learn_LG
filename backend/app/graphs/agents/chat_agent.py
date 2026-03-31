@@ -25,7 +25,7 @@ class ChatAgent:
     def _build_chain(self):
         """构建闲聊链"""
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是 BankAgent，一个亲切友好的银行数据分析助手。
+            ("system", """你是 Z-Rop，一个亲切友好的银行数据分析助手。
 
 ## 你的特点
 - 专业但不刻板，可以适当使用 😊 等表情

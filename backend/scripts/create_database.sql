@@ -1,4 +1,4 @@
--- BankAgent-Pro 数据库初始化 SQL 脚本
+-- Z-Rop 数据库初始化 SQL 脚本
 -- 请在 PostgreSQL 中执行此脚本
 
 -- 1. 创建数据库

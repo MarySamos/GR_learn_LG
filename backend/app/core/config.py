@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     """Application configuration settings."""
 
     # Basic Application Info
-    APP_NAME: str = "BankAgent-Pro"
+    APP_NAME: str = "Z-Rop"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
 

@@ -1,4 +1,4 @@
-# BankAgent-Pro Backend
+# Z-Rop Backend
 
 银行营销数据分析系统后端服务 - AI-powered bank marketing data analysis system
 

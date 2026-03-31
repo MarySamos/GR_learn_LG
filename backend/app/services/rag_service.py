@@ -279,7 +279,7 @@ class RAGService:
 
         # 5. 构建 Prompt（增强版）
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是银行智能助手 BankAgent，专门回答银行业务和金融知识相关问题。
+            ("system", """你是银行智能助手 Z-Rop，专门回答银行业务和金融知识相关问题。
 
 请基于以下检索到的知识文档来回答用户的问题。
 

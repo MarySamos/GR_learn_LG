@@ -129,7 +129,7 @@ def create_admin_user():
 def main():
     """主函数"""
     print("\n" + "=" * 50)
-    print("🚀 BankAgent-Pro 数据库初始化")
+    print("🚀 Z-Rop 数据库初始化")
     print("=" * 50 + "\n")
 
     # Step 1: 创建扩展

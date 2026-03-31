@@ -51,7 +51,7 @@ class ReportService:
             fontSize=24,
             spaceAfter=30
         )
-        elements.append(Paragraph("BankAgent Pro - Data Analysis Report", title_style))
+        elements.append(Paragraph("Z-Rop - Data Analysis Report", title_style))
         elements.append(Paragraph(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}", self.styles['Normal']))
         elements.append(Spacer(1, 30))
         

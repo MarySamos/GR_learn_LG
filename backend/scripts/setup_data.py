@@ -250,7 +250,7 @@ def print_summary(results: dict):
 def main():
     """主函数"""
     print("\n" + "🏦" * 20)
-    print("\n     BankAgent-Pro 数据准备向导")
+    print("\n     Z-Rop 数据准备向导")
     print("\n" + "🏦" * 20)
 
     results = {}

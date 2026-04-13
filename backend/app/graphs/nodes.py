@@ -1,5 +1,5 @@
 """
-LangGraph 节点定义（增强版）
+LangGraph 节点定义
 
 优化内容：
 1. Few-Shot Prompt 优化
@@ -198,11 +198,11 @@ def resolve_user_input(state: AgentState) -> dict:
     return {"resolved_input": resolved}
 
 
-# ========== 节点 3: Text-to-SQL（增强版 - Few-Shot + 上下文）==========
+# ========== 节点 3: Text-to-SQL==========
 @handle_node_errors("text_to_sql")
 def text_to_sql(state: AgentState) -> dict:
     """
-    Text-to-SQL 节点（增强版）
+    Text-to-SQL 节点
 
     将自然语言转换为 SQL 查询
     - 使用 Few-Shot 示例
@@ -251,11 +251,11 @@ def text_to_sql(state: AgentState) -> dict:
     return {"generated_sql": sql}
 
 
-# ========== 节点 4: 执行查询（增强版 - 自愈机制）==========
+# ========== 节点 4: 执行查询==========
 @handle_node_errors("execute_query")
 def execute_query(state: AgentState) -> dict:
     """
-    执行 SQL 查询节点（增强版 - 带自愈机制）
+    执行 SQL 查询节点（
 
     执行 SQL 并返回结果，如果失败则自动修正后重试
     """
@@ -297,7 +297,7 @@ def execute_query(state: AgentState) -> dict:
     return {"sql_result": result["data"]}
 
 
-# ========== 节点 5: 统计分析（增强版 - 上下文感知）==========
+# ========== 节点 5: 统计分析==========
 @handle_node_errors("data_analysis")
 def data_analysis(state: AgentState) -> dict:
     """
@@ -335,10 +335,10 @@ def data_analysis(state: AgentState) -> dict:
 """
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", f"""你是一个数据分析助手。{tools_description}
+        ("system", """你是一个数据分析助手。{tools_desc}
 
 数据库结构：
-{MARKETING_DATA_SCHEMA}
+{schema}
 
 请根据用户输入，选择最合适的工具并提供参数。
 
@@ -356,7 +356,11 @@ def data_analysis(state: AgentState) -> dict:
     ])
 
     chain = prompt | llm | JsonOutputParser()
-    tool_config = chain.invoke({"input": user_input})
+    tool_config = chain.invoke({
+        "input": user_input,
+        "tools_desc": tools_description,
+        "schema": MARKETING_DATA_SCHEMA
+    })
 
     logger.info(f"🔧 已选择工具: {tool_config.get('tool')}")
 
@@ -383,7 +387,7 @@ def data_analysis(state: AgentState) -> dict:
     return {"stats_result": result}
 
 
-# ========== 节点 6: 可视化（增强版）==========
+# ========== 节点 6: 可视化==========
 @handle_node_errors("visualization")
 def visualization(state: AgentState) -> dict:
     """
@@ -419,7 +423,7 @@ def visualization(state: AgentState) -> dict:
 - 数值相关性 → 散点图
 
 返回 JSON 格式：
-{"chart_type": "图表类型", "x_column": "X轴列名", "y_column": "Y轴列名", "title": "图表标题"}
+{{"chart_type": "图表类型", "x_column": "X轴列名", "y_column": "Y轴列名", "title": "图表标题"}}
 
 注意：
 - 如果数据中有 count、total、converted 等字段，优先选择这些作为 Y 轴
@@ -458,11 +462,11 @@ def visualization(state: AgentState) -> dict:
     }
 
 
-# ========== 节点 7: RAG 知识检索（增强版 - 上下文感知）==========
+# ========== 节点 7: RAG 知识检索==========
 @handle_node_errors("knowledge_search")
 def knowledge_search(state: AgentState) -> dict:
     """
-    RAG 知识检索节点（增强版 - 结合对话上下文）
+    RAG 知识检索节点
 
     从 pgvector 中检索相似文档，结合上下文生成回答
     """
@@ -490,7 +494,7 @@ def knowledge_search(state: AgentState) -> dict:
     }
 
 
-# ========== 节点 8: 生成回答（增强版 - 完整上下文）==========
+# ========== 节点 8: 生成回答==========
 @handle_node_errors("generate_answer")
 def generate_answer(state: AgentState) -> dict:
     """

@@ -16,8 +16,6 @@ from app.db.models import User
 
 # User role constants
 _ROLE_USER = "user"
-_ROLE_ADMIN = "admin"
-_ROLE_ANALYST = "analyst"
 
 # Default user values
 _DEFAULT_DEPARTMENT = None
@@ -83,12 +81,12 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "type": "access"})
 
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def verify_token(token: str) -> Optional[str]:
+def verify_token(token: str, expected_type: Optional[str] = None) -> Optional[str]:
     """验证 JWT 令牌并返回用户 ID.
 
     Args:
@@ -99,6 +97,15 @@ def verify_token(token: str) -> Optional[str]:
     """
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        token_type = payload.get("type")
+
+        # Backward compatibility: legacy access tokens may not include token type.
+        if expected_type == "access":
+            if token_type not in (None, "access"):
+                return None
+        elif expected_type and token_type != expected_type:
+            return None
+
         employee_id: str = payload.get("sub")
         return employee_id if employee_id else None
     except JWTError:
@@ -167,14 +174,7 @@ def create_user(
 
     Returns:
         创建的 User 对象
-        
-    Note:
-        技术部用户自动设置为管理员角色
     """
-    # 技术部自动成为管理员
-    if department and ('技术' in department or 'IT' in department.upper() or '技术部' in department):
-        role = _ROLE_ADMIN
-    
     hashed_pwd = hash_password(password)
 
     db_user = User(

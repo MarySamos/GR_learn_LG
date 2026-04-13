@@ -78,7 +78,7 @@ class ZhipuEmbeddings:
 
 
 class RAGService:
-    """RAG 知识问答服务（增强版 - 智谱AI版）"""
+    """RAG 知识问答服务"""
 
     def __init__(self):
         self.engine = create_engine(settings.DATABASE_URL)

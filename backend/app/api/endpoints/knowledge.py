@@ -59,7 +59,8 @@ async def get_documents(
                 SELECT id, title, file_path, file_type,
                        LENGTH(content) as content_length,
                        created_at, updated_at,
-                       uploaded_by
+                       uploaded_by,
+                       (embedding IS NOT NULL) as has_embedding
                 FROM knowledge_docs
                 ORDER BY created_at DESC
                 LIMIT :limit OFFSET :offset
@@ -71,8 +72,6 @@ async def get_documents(
             documents = []
             for row in rows:
                 doc = dict(zip(columns, row))
-                # 检查是否有向量
-                doc["has_embedding"] = rag_service.get_doc_count() > 0
                 documents.append(doc)
 
             total_pages = (total + page_size - 1) // page_size

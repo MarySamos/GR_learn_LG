@@ -17,20 +17,6 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     """用户注册请求模型"""
     password: str = Field(..., min_length=6, description="密码（至少6位）")
-    role: Optional[str] = Field("user", description="角色")
-
-    @field_validator('role')
-    @classmethod
-    def validate_role(cls, v: Optional[str]) -> str:
-        """验证角色是否合法"""
-        if v is None:
-            return "user"
-
-        allowed_roles = {"user", "admin", "analyst"}
-        if v not in allowed_roles:
-            raise ValueError(f"角色必须是以下之一: {', '.join(allowed_roles)}")
-
-        return v
 
     @field_validator('password')
     @classmethod

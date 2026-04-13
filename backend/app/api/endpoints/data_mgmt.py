@@ -7,12 +7,16 @@ import traceback
 from typing import List
 
 import pandas as pd
-from fastapi import APIRouter, File, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 
-from app.core.database import engine
+from app.api.dependencies import require_analyst
+from app.core.database import engine, get_db
+from app.db.models import User
 from app.schemas.data_mgmt import DataPage, TableInfo
+from app.services.log_service import log_service
 
 router = APIRouter()
 
@@ -130,7 +134,11 @@ async def export_table(table_name: str):
 
 
 @router.post("/upload")
-async def upload_csv(file: UploadFile = File(...)):
+async def upload_csv(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_analyst),
+):
     """上传 CSV 文件并导入数据库"""
     if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="只支持 CSV 文件")
@@ -153,6 +161,14 @@ async def upload_csv(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="文件为空")
 
         df.to_sql(_TARGET_TABLE, engine, if_exists="append", index=False)
+        log_service.log_action(
+            db=db,
+            user_id=current_user.id,
+            action="upload",
+            resource="data",
+            details=f"CSV import rows={len(df)}",
+            status="success",
+        )
 
         return {
             "message": "上传成功",

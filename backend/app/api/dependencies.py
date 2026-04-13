@@ -41,7 +41,7 @@ async def get_current_user(
     Raises:
         HTTPException: 如果 token 无效或用户不存在
     """
-    employee_id = verify_token(credentials.credentials)
+    employee_id = verify_token(credentials.credentials, expected_type="access")
     if employee_id is None:
         raise _CREDENTIALS_EXCEPTION
 

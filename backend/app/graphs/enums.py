@@ -6,7 +6,7 @@ from enum import Enum
 
 
 class Intent(str, Enum):
-    """用户意图类型（增强版）"""
+    """用户意图类型"""
 
     # ========== 数据查询类 ==========
     QUERY = "query"           # 简单数据查询

@@ -136,7 +136,8 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
             name=user_data.name,
             password=user_data.password,
             department=user_data.department,
-            role=user_data.role or _DEFAULT_ROLE,
+            # Public registration always creates least-privileged users.
+            role=_DEFAULT_ROLE,
         )
 
         access_token = create_access_token(data={"sub": new_user.employee_id})
@@ -249,7 +250,7 @@ def refresh_token(
     Raises:
         HTTPException 401: 刷新令牌无效
     """
-    employee_id = verify_token(request.refresh_token)
+    employee_id = verify_token(request.refresh_token, expected_type="refresh")
 
     if employee_id is None:
         raise HTTPException(

@@ -1,0 +1,12 @@
+=== 决策树 ===
+TN=960, FP=215, FN=190, TP=868
+Accuracy=0.8186, Precision=0.8015, Recall=0.8204, F1=0.8108, AUC=0.8827
+
+=== 逻辑回归 ===
+TN=999, FP=176, FN=213, TP=845
+Accuracy=0.8258, Precision=0.8276, Recall=0.7987, F1=0.8129, AUC=0.9071
+
+=== 随机森林 ===
+TN=981, FP=194, FN=125, TP=933
+Accuracy=0.8571, Precision=0.8279, Recall=0.8819, F1=0.8540, AUC=0.9150
+

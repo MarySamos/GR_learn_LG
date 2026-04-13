@@ -24,7 +24,7 @@
     "euribor3m",
     "nr_employed"
   ],
-  "training_date": "2026-01-08T14:25:41.915337",
+  "training_date": "2026-04-11T07:59:21.607560",
   "n_features": 22,
   "n_estimators": 100,
   "max_depth": 10

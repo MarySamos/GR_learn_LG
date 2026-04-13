@@ -4,7 +4,7 @@
       <div>
         <p class="page-breadcrumb">知识库 / 上传文档</p>
         <h1 class="page-title">上传知识文档</h1>
-        <p class="page-subtitle">支持 PDF 格式</p>
+        <p class="page-subtitle">支持 PDF, MD 格式</p>
       </div>
     </header>
 
@@ -14,10 +14,10 @@
            @dragleave.prevent="isDragOver = false"
            @drop.prevent="handleDrop">
         <div class="upload-icon">📕</div>
-        <h3>拖放 PDF 文件到这里</h3>
-        <p>或点击选择文件</p>
-        <input type="file" ref="fileInput" @change="handleFileSelect" accept=".pdf" class="hidden" />
-        <button class="btn-primary" @click="$refs.fileInput.click()">选择 PDF</button>
+        <h3>拖放文档到这里</h3>
+        <p>或点击选择文件 (PDF/MD)</p>
+        <input type="file" ref="fileInput" @change="handleFileSelect" accept=".pdf,.md" class="hidden" />
+        <button class="btn-primary" @click="$refs.fileInput.click()">选择文件</button>
       </div>
 
       <div v-if="selectedFile" class="file-info">
